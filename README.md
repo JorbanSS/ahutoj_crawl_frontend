@@ -118,9 +118,23 @@ export default {
 }
 ```
 
-创建 `base.scss` 文件
+`vite.config.ts` 文件内配置 `preprocessorOptions`
 
-```css
+```ts
+export default defineConfig({
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: '@import "@/assets/scss/base.scss";',
+      },
+    },
+  },
+})
+```
+
+`main.ts` 文件内引入 `tailwind.scss` 文件
+
+```ts
 @import "./tailwind.scss";
 ```
 
@@ -172,6 +186,8 @@ pnpm i notivue
 # pnpm install @types/spark-md5 -D
 ```
 
+新建 `base.scss` 文件
+
 `base.scss` 中添加
 
 ```scss
@@ -196,30 +212,6 @@ pnpm i notivue
 
 修改如下来实现用 `@/` 访问项目根目录
 
-```sh
-pnpm install path --save
-```
-
-`vite.config.ts` 添加如下
-
-
-
-
-
-`vite.config.ts` 添加如下
-
-```ts
-{
-  export default defineConfig({
-    resolve: {
-      alias: {
-        '@': '/src',
-      },
-    },
-  })
-}
-```
-
 `tsconfig.json` 添加如下
 
 ```json
@@ -227,23 +219,23 @@ pnpm install path --save
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "src/*"
-      ],
-    },
+      "@/*": ["src/*"]
+    }
   }
 }
 ```
 
-`postcss.config.js` 改成如下
+`vite.config.ts` 添加如下
 
-```js
-export default {
-  plugins: {
-    tailwindcss: {},
-    autoprefixer: {},
-  },
-}
+```ts
+export default defineConfig({
+  plugins: [vue()],
+  resolve: {
+    alias: {
+      '@': '/src'
+    }
+  }
+})
 ```
 
 ## 运行项目

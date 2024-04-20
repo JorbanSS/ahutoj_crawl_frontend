@@ -8,6 +8,13 @@ export default defineConfig({
     hmr: true,
     port: 8090,
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: '@import "@/assets/scss/base.scss";',
+      },
+    },
+  },
   resolve: {
     alias: {
       '@': '/src',
