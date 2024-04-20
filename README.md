@@ -73,11 +73,7 @@ pnpm install
 pnpm create vite@latest
 
 pnpm install  # 补全依赖
-
-touch .gitignore
 ```
-
-将 `node_modules/` 放入 `.gitignore`
 
 5. 安装其余环境
 
@@ -122,18 +118,18 @@ export default {
 }
 ```
 
-创建 `tailwind.css` 文件
+创建 `base.scss` 文件
+
+```css
+@import "./tailwind.scss";
+```
+
+创建 `tailwind.scss` 文件
 
 ```css
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-```
-
-`main.ts` 中添加
-
-```sh
-import "./assets/scss/tailwind.css";
 ```
 
 2. 安装 daisyUI
@@ -176,10 +172,10 @@ pnpm i notivue
 # pnpm install @types/spark-md5 -D
 ```
 
-`main.ts` 中添加
+`base.scss` 中添加
 
-```ts
-import '@icon-park/vue/styles/index.css';
+```scss
+@import '@icon-park/vue/styles/index.css';
 ```
 
 4. 安装 AutoAnimate
@@ -200,18 +196,28 @@ import '@icon-park/vue/styles/index.css';
 
 修改如下来实现用 `@/` 访问项目根目录
 
+```sh
+pnpm install path --save
+```
+
+`vite.config.ts` 添加如下
+
+
+
+
+
 `vite.config.ts` 添加如下
 
 ```ts
-// {
-//   export default defineConfig({
-//     resolve: {
-//       alias: {
-//         '@': '/src',
-//       },
-//     },
-//   })
-// }
+{
+  export default defineConfig({
+    resolve: {
+      alias: {
+        '@': '/src',
+      },
+    },
+  })
+}
 ```
 
 `tsconfig.json` 添加如下
