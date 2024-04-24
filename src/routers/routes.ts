@@ -16,7 +16,13 @@ const routes = [
     name: "RatingRank",
     path: "/ratingrank",
     component: () => import("@/pages/RatingRank.vue"),
-    meta: { title: BaseTitle + "评分榜" },
+    meta: { title: BaseTitle + "评分排行榜" },
+  },
+  {
+    name: "UserManage",
+    path: "/usermanage",
+    component: () => import("@/pages/UserManage.vue"),
+    meta: { title: BaseTitle + "用户管理" },
   },
   {
     name: "About",
