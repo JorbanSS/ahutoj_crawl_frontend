@@ -36,6 +36,14 @@ export const recentContestsOriginOptions = [
   { label: "Luogu", value: "Luogu" },
 ];
 
+export const ratingRankOriginOptions = [
+  { label: "全部平台", value: "All" },
+  { label: "Codeforces", value: "Codeforces" },
+  { label: "Nowcoder", value: "Nowcoder" },
+  { label: "Atcoder", value: "Atcoder" },
+  // { label: "Luogu", value: "Luogu" },
+];
+
 export const recentContestLabelOptions = [
   { label: "AtCoder Beginner Contest", value: "ABC" },
   { label: "AtCoder Regular Contest", value: "ARC" },

@@ -35,7 +35,7 @@
           Atcoder ID
           <input type="text" class="grow" placeholder="" v-model="bindInfo.AtcoderID" />
         </label>
-        <button class="btn btn-neutral w-full">绑定账户</button>
+        <button class="btn btn-neutral w-full" @click="bindInfo.bind">绑定账户</button>
       </div>
     </div>
   </div>
@@ -49,7 +49,7 @@ import { push } from 'notivue';
 
 import { Validator } from '@/utils/globalFunctions';
 import { User } from '@icon-park/vue-next';
-import { _addUser } from '@/apis/user';
+import { _addUser, _bindAccount } from '@/apis/user';
 
 const route = useRoute();
 
@@ -59,28 +59,28 @@ let registerInfo = reactive({
   Year: '',
 
   register() {
-    if (registerInfo.UID == '' || registerInfo.UserName == '' || registerInfo.Year == '') {
+    if (this.UID == '' || this.UserName == '' || this.Year == '') {
       push.warning({
         title: '数据错误',
         message: '未填写完整信息',
       })
       return;
     }
-    if (Validator.UID(registerInfo.UID) == false) {
+    if (Validator.UID(this.UID) == false) {
       push.warning({
         title: '数据错误',
         message: '用户 UID 格式错误，正确格式为：学校首字母大写+学号，例：AHUT229074001',
       });
       return;
     }
-    if (Validator.UserName(registerInfo.UserName) == false) {
+    if (Validator.UserName(this.UserName) == false) {
       push.warning({
         title: '数据错误',
         message: '请填写真实姓名',
       });
       return;
     }
-    if (Validator.Year(registerInfo.Year) == false) {
+    if (Validator.Year(this.Year) == false) {
       push.warning({
         title: '数据错误',
         message: '入学年份格式错误，参考格式为：2022',
@@ -89,15 +89,15 @@ let registerInfo = reactive({
     }
 
     let params = {
-      UID: registerInfo.UID,
-      UserName: registerInfo.UserName,
-      Year: registerInfo.Year,
+      UID: this.UID,
+      UserName: this.UserName,
+      Year: this.Year,
     };
     _addUser(params)
       .then(() => {
         push.success({
           title: '添加成功',
-          message: `已添加用户 ${registerInfo.UserName}`,
+          message: `已添加用户 ${this.UserName}`,
         })
       })
   },
@@ -110,7 +110,26 @@ let bindInfo = reactive({
   AtcoderID: '',
 
   bind() {
-
+    if (this.UID == '' || this.CodeforcesID == '' && this.NowcoderID == '' && this.AtcoderID == '') {
+      push.warning({
+        title: '数据错误',
+        message: 'UID 必填，其他平台 ID 至少填一项',
+      })
+      return;
+    }
+    let params: any = {
+      UID: this.UID,
+    };
+    if (this.CodeforcesID != '') params.CodeforcesID = this.CodeforcesID;
+    if (this.NowcoderID != '') params.NowcoderID = this.NowcoderID;
+    if (this.AtcoderID != '') params.AtcoderID = this.AtcoderID;
+    _bindAccount(params)
+      .then(() => {
+        push.success({
+          title: '绑定成功',
+          message: `已绑定用户 ${this.UID} 的相关账户`,
+        })
+      })
   },
 })
 

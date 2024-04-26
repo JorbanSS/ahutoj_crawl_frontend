@@ -12,7 +12,7 @@
           <refresh theme="outline" size="18" />
           刷新列表
         </button>
-        <button class="btn join-item" @click="recentContests.refresh()">
+        <button class="btn join-item" @click="recentContests.scrape()">
           <DownloadTwo theme="outline" size="18" />
           重新拉取
         </button>
@@ -21,12 +21,12 @@
     <table class="table table-zebra mb-3">
       <thead>
         <tr>
-          <th v-for="(item, index) in ['平台', '比赛名称', '标签', '赛制', '开始时间', '持续时间']" :key="index">
+          <th v-for="(item, index) in ['平台', '比赛名称', '标签', '赛制', '开始时间', '时长']" :key="index">
             {{ item }}
           </th>
         </tr>
       </thead>
-      <tbody>
+      <tbody v-auto-animate>
         <tr
           v-for="item in recentContests.RecentContests.filter(item => item.OJ == recentContests.searchInfo.OJ || recentContests.searchInfo.OJ == 'All')"
           :key="item.CID" @click="recentContests.goToContest(item.URL)" target="_blank" class="cursor-pointer">
@@ -65,7 +65,7 @@ import { push } from 'notivue';
 import { Refresh, DownloadTwo } from '@icon-park/vue-next';
 
 import { RecentContestsType } from '@/interfaces/recentContests';;
-import { _getRecentContests, _refreshRecentContests } from '@/apis/recentContests';
+import { _getRecentContests, _scrapeRecentContests } from '@/apis/recentContests';
 import { ConvertTools } from '@/utils/globalFunctions';
 import { recentContestsOriginOptions, recentContestLabelOptions } from '@/config';
 
@@ -106,8 +106,8 @@ let recentContests = reactive<RecentContestsType>({
     window.open(url, '_blank');
   },
 
-  refresh() {
-    _refreshRecentContests({})
+  scrape() {
+    _scrapeRecentContests({})
       .then(() => {
         push.info({
           title: '请求成功',

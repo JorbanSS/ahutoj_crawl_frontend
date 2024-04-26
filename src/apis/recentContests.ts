@@ -5,7 +5,7 @@ export const _getRecentContests = (data: any) => {
   return Get('recentcontests', data);
 }
 
-// 重新获取近期比赛
-export const _refreshRecentContests = (data: any) => {
+// 拉取近期比赛
+export const _scrapeRecentContests = (data: any) => {
   return Put('recentcontests', data);
 }
