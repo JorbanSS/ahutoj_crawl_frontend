@@ -47,40 +47,48 @@
         </button>
       </div>
     </div>
-    <table class="table table-zebra mb-3">
-      <thead>
-        <tr>
-          <th v-for="(item, index) in ['排名', 'UID', '用户名', '综合 Rating', 'Codeforces', 'Nowcoder', 'Atcoder']" :key="index">
-            {{ item }}
-          </th>
-        </tr>
-      </thead>
-      <tbody v-auto-animate>
-        <tr v-for="(item, index) in ratingRank.RatingRank" :key="item.UID">
-          <th>
-            {{ index + 1 }}
-          </th>
-          <th>
-            {{ item.UID }}
-          </th>
-          <th>
-            {{ item.UserName }}
-          </th>
-          <th>
-            {{ item.Rating.toFixed(1) }}
-          </th>
-          <td>
-            {{ item.CodeforcesRating }} (Max. {{ item.CodeforcesMaxRating }})
-          </td>
-          <td>
-            {{ item.NowcoderRating }} (Max. {{ item.NowcoderMaxRating }})
-          </td>
-          <td>
-            {{ item.AtcoderRating }} (Max. {{ item.AtcoderMaxRating }})
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="overflow-x-hidden rounded-b-2xl" style="max-height: calc(100vh - 124px - 150px)">
+      <table class="table table-zebra mb-3">
+        <thead>
+          <tr>
+            <th v-for="(item, index) in ['排名', '用户名', '综合 Rating', 'Codeforces', 'Nowcoder', 'Atcoder']"
+              :key="index">
+              {{ item }}
+            </th>
+          </tr>
+        </thead>
+        <tbody v-auto-animate>
+          <tr v-for="(item, index) in ratingRank.RatingRank" :key="item.UID">
+            <th>
+              {{ index + 1 }}
+            </th>
+            <th>
+              <div class="tooltip" :data-tip="item.UID">
+                {{ item.UserName }}
+              </div>
+            </th>
+            <th>
+              {{ item.Rating.toFixed(1) }}
+            </th>
+            <td>
+              <div class="tooltip" :data-tip="item.CodeforcesID == '' ? '未绑定 Codeforces' : item.CodeforcesID">
+                {{ item.CodeforcesRating }} (Max. {{ item.CodeforcesMaxRating }})
+              </div>
+            </td>
+            <td>
+              <div class="tooltip" :data-tip="item.NowcoderID == '' ? '未绑定 Nowcoder' : item.NowcoderID">
+                {{ item.NowcoderRating }} (Max. {{ item.NowcoderMaxRating }})
+              </div>
+            </td>
+            <td>
+              <div class="tooltip" :data-tip="item.AtcoderID == '' ? '未绑定 Atcoder' : item.AtcoderID">
+                {{ item.AtcoderRating }} (Max. {{ item.AtcoderMaxRating }})
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 

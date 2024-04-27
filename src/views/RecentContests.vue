@@ -4,7 +4,10 @@
       <ul class="menu menu-vertical lg:menu-horizontal bg-base-200 rounded-box font-bold w-fit">
         <li v-for="item in recentContestsOriginOptions" :key="item.value" :value="item.value">
           <a :class="{ 'btn-active': item.value == recentContests.searchInfo.OJ }"
-            @click="recentContests.searchInfo.OJ = item.value">{{ item.label }}</a>
+            @click="recentContests.searchInfo.OJ = item.value">{{ item.label }}
+            <div class="badge badge-neutral badge-sm" v-if="item.value == 'All'">{{ recentContests.Count }}</div>
+            <div class="badge badge-neutral badge-sm" v-else>{{ recentContests.RecentContests.filter(contest => contest.OJ == item.value).length }}</div>
+          </a>
         </li>
       </ul>
       <div class="join">
@@ -18,42 +21,47 @@
         </button>
       </div>
     </div>
-    <table class="table table-zebra mb-3">
-      <thead>
-        <tr>
-          <th v-for="(item, index) in ['平台', '比赛名称', '标签', '赛制', '开始时间', '时长']" :key="index">
-            {{ item }}
-          </th>
-        </tr>
-      </thead>
-      <tbody v-auto-animate>
-        <tr
-          v-for="item in recentContests.RecentContests.filter(item => item.OJ == recentContests.searchInfo.OJ || recentContests.searchInfo.OJ == 'All')"
-          :key="item.CID" @click="recentContests.goToContest(item.URL)" target="_blank" class="cursor-pointer">
-          <th>
-            {{ item.OJ }}
-          </th>
-          <td>
-            <span class="font-bold talbe-lg">{{ item.Title }}</span>
-          </td>
-          <td class="space-x-1 space-y-0.5 whitespace-nowrap">
-            <span class="badge badge-neutral badge-md font-bold"
-              v-for="(label, index) in item.Label.split(/;/).filter(item => item != '' && item != '/')" :key="index">
-              {{ label }}
-            </span>
-          </td>
-          <th>
-            {{ item.Type }}
-          </th>
-          <th>
-            {{ ConvertTools.PrintTime(item.StartTime, 2, 0, true) }}
-          </th>
-          <th>
-            {{ ConvertTools.PrintTimeInterval(item.Duration) }}
-          </th>
-        </tr>
-      </tbody>
-    </table>
+    <div class="overflow-x-hidden rounded-b-2xl" style="max-height: calc(100vh - 124px - 150px)">
+      <table class="table table-zebra">
+        <thead>
+          <tr>
+            <th v-if="recentContests.searchInfo.OJ == 'All'">
+              平台
+            </th>
+            <th v-for="(item, index) in ['比赛名称', '标签', '赛制', '开始时间', '时长']" :key="index">
+              {{ item }}
+            </th>
+          </tr>
+        </thead>
+        <tbody v-auto-animate>
+          <tr
+            v-for="item in recentContests.RecentContests.filter(item => item.OJ == recentContests.searchInfo.OJ || recentContests.searchInfo.OJ == 'All')"
+            :key="item.CID" @click="recentContests.goToContest(item.URL)" target="_blank" class="cursor-pointer">
+            <th v-if="recentContests.searchInfo.OJ == 'All'">
+              {{ item.OJ }}
+            </th>
+            <td>
+              <span class="font-bold talbe-lg">{{ item.Title }}</span>
+            </td>
+            <td class="space-x-1 space-y-0.5 whitespace-nowrap">
+              <span class="badge badge-neutral badge-md font-bold"
+                v-for="(label, index) in item.Label.split(/;/).filter(item => item != '' && item != '/')" :key="index">
+                {{ label }}
+              </span>
+            </td>
+            <th>
+              {{ item.Type }}
+            </th>
+            <th>
+              {{ ConvertTools.PrintTime(item.StartTime, 2, 0, true) }}
+            </th>
+            <th>
+              {{ ConvertTools.PrintTimeInterval(item.Duration) }}
+            </th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 

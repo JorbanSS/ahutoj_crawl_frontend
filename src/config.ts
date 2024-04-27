@@ -58,4 +58,5 @@ export const recentContestLabelOptions = [
   { label: "牛客小白月赛", value: "小白月赛" },
   { label: "牛客练习赛", value: "牛客练习赛" },
   { label: "洛谷基础赛", value: "洛谷基础赛" },
+  { label: "月月赛", value: "洛谷月赛" },
 ];

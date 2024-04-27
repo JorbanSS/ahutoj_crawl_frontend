@@ -1,7 +1,7 @@
 <template>
   <NavBar></NavBar>
   <keep-alive>
-    <div class="max-w-6xl mx-auto m-6" style="min-height: calc(100vh - 124px - 48px)">
+    <div class="max-w-6xl mx-auto m-6" style="min-height: calc(100vh - 124px - 48px)" v-auto-animate>
       <RouterView></RouterView>
     </div>
   </keep-alive>

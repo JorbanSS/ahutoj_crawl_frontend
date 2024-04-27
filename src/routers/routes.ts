@@ -9,31 +9,31 @@ const routes = [
   {
     name: "RecentContests",
     path: "/recentcontests",
-    component: () => import("@/pages/RecentContests.vue"),
+    component: () => import("@/views/RecentContests.vue"),
     meta: { title: BaseTitle + "近期比赛" },
   },
   {
     name: "RatingRank",
     path: "/ratingrank",
-    component: () => import("@/pages/RatingRank.vue"),
+    component: () => import("@/views/RatingRank.vue"),
     meta: { title: BaseTitle + "评分排行榜" },
   },
   {
     name: "UserManage",
     path: "/usermanage",
-    component: () => import("@/pages/UserManage.vue"),
+    component: () => import("@/views/UserManage.vue"),
     meta: { title: BaseTitle + "用户管理" },
   },
   {
     name: "About",
     path: "/about",
-    component: () => import("@/pages/About.vue"),
+    component: () => import("@/views/About.vue"),
     meta: { title: BaseTitle + "关于" },
   },
   {
     name: "Error404",
     path: '/:pathMatch(.*)',
-    component: () => import("@/pages/Error404.vue"),
+    component: () => import("@/views/Error404.vue"),
     meta: { title: BaseTitle + "404" },
   },
 ];
