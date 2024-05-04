@@ -66,16 +66,17 @@
 </template>
 
 <script lang="ts" setup name="Main">
-import { computed, onMounted, reactive, ref, watch } from 'vue';
-import { RouterView, useRoute } from 'vue-router';
+import { onMounted, reactive } from 'vue';
+import { useRoute } from 'vue-router';
 
+import { DownloadTwo, Refresh } from '@icon-park/vue-next';
 import { push } from 'notivue';
-import { Refresh, DownloadTwo } from '@icon-park/vue-next';
 
-import { RecentContestsType } from '@/interfaces/recentContests';;
-import { _getRecentContests, _scrapeRecentContests } from '@/apis/recentContests';
+import { _getRecentContests, _scrapeRecentContests } from '@/api/recentContests';
+import { recentContestLabelOptions, recentContestsOriginOptions } from '@/config';
+import { RecentContestsType } from '@/interfaces/recentContests';
 import { ConvertTools } from '@/utils/globalFunctions';
-import { recentContestsOriginOptions, recentContestLabelOptions } from '@/config';
+;
 
 const route = useRoute();
 

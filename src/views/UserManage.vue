@@ -42,14 +42,13 @@
 </template>
 
 <script lang="ts" setup name="Main">
-import { onMounted, reactive, ref, watch } from 'vue';
-import { RouterView, useRoute } from 'vue-router';
+import { onMounted, reactive } from 'vue';
+import { useRoute } from 'vue-router';
 
 import { push } from 'notivue';
 
+import { _addUser, _bindAccount } from '@/api/user';
 import { Validator } from '@/utils/globalFunctions';
-import { User } from '@icon-park/vue-next';
-import { _addUser, _bindAccount } from '@/apis/user';
 
 const route = useRoute();
 

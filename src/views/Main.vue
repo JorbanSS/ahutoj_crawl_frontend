@@ -9,10 +9,8 @@
 </template>
 
 <script lang="ts" setup name="Main">
-import { onMounted, reactive, ref, watch } from 'vue';
+import { onMounted } from 'vue';
 import { RouterView, useRoute } from 'vue-router';
-
-import { push } from 'notivue';
 
 import Footer from '@/components/Main/Footer.vue';
 import NavBar from '@/components/Main/NavBar.vue';

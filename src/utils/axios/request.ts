@@ -6,6 +6,8 @@ import httpErrorHandler from "./httpErrorHandler";
 export let host: string;
 export let port: number;
 
+const DEFAULT_TIMEOUT = 2000;
+
 if (import.meta.env.MODE == "production") {
   host = "/";
   // port = 4433;
@@ -26,7 +28,7 @@ const requestBaseURL = "api/";
 // 创建 axios 请求实例
 const Axios = axios.create({
   baseURL: host,
-  timeout: 2000, // 请求 2s 超时
+  timeout: DEFAULT_TIMEOUT, // 请求 2s 超时
   withCredentials: false, // 跨域请求是否需要携带 cookie
 });
 
@@ -76,29 +78,33 @@ Axios.interceptors.response.use(
   }
 );
 
-export function Get(url: string, params: any, content = 0) {
+export function Get(url: string, params: any, content = 0, timeout: number = DEFAULT_TIMEOUT) {
   return Axios.get(url, {
     params,
     headers: { "Content-Type": contentType[content] },
+    timeout: timeout,
   });
 }
 
-export function Post(url: string, data: any, content = 0) {
+export function Post(url: string, data: any, content = 0, timeout: number = DEFAULT_TIMEOUT) {
   return Axios.post(url, data, {
     headers: { "Content-Type": contentType[content] },
+    timeout: timeout,
   });
 }
 
-export function Del(url: string, data: any, content = 0) {
+export function Del(url: string, data: any, content = 0, timeout: number = DEFAULT_TIMEOUT) {
   return Axios.delete(url, {
     data,
     headers: { "Content-Type": contentType[content] },
+    timeout: timeout,
   });
 }
 
-export function Put(url: string, data: any, content = 0) {
+export function Put(url: string, data: any, content = 0, timeout: number = DEFAULT_TIMEOUT) {
   return Axios.put(url, data, {
     headers: { "Content-Type": contentType[content] },
+    timeout: timeout,
   });
 }
 

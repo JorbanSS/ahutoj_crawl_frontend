@@ -167,6 +167,10 @@ pnpm install @icon-park/vue-next --save
 
 pnpm i notivue
 
+pnpm install apexcharts --save
+
+pnpm install --save vue3-apexcharts
+
 # pnpm install v-calendar@next @popperjs/core
 
 # pnpm install vue-draggable-plus

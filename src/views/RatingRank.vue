@@ -47,12 +47,11 @@
         </button>
       </div>
     </div>
-    <div class="overflow-x-hidden rounded-b-2xl" style="max-height: calc(100vh - 124px - 150px)">
-      <table class="table table-zebra mb-3">
+    <div class="overflow-x-hidden rounded-b-2xl" style="max-height: calc(100vh - 124px - 160px)">
+      <table class="table table-zebra text-center">
         <thead>
           <tr>
-            <th v-for="(item, index) in ['排名', '用户名', '综合 Rating', 'Codeforces', 'Nowcoder', 'Atcoder']"
-              :key="index">
+            <th v-for="(item, index) in ['排名', '用户名', '综合 Rating', 'Codeforces', 'Nowcoder', 'Atcoder']" :key="index">
               {{ item }}
             </th>
           </tr>
@@ -70,11 +69,13 @@
             <th>
               {{ item.Rating.toFixed(1) }}
             </th>
-            <td>
-              <div class="tooltip" :data-tip="item.CodeforcesID == '' ? '未绑定 Codeforces' : item.CodeforcesID">
+            <th>
+              <div class="tooltip" :data-tip="item.CodeforcesID == '' ? '未绑定 Codeforces' : item.CodeforcesID"
+                :class="{ 'cursor-pointer text-blue-500': item.CodeforcesID != '' }"
+                @click="$router.push({ name: 'CodeforcesStatistics', params: { CFID: item.CodeforcesID } })">
                 {{ item.CodeforcesRating }} (Max. {{ item.CodeforcesMaxRating }})
               </div>
-            </td>
+            </th>
             <td>
               <div class="tooltip" :data-tip="item.NowcoderID == '' ? '未绑定 Nowcoder' : item.NowcoderID">
                 {{ item.NowcoderRating }} (Max. {{ item.NowcoderMaxRating }})
@@ -99,7 +100,7 @@ import { RouterView, useRoute } from 'vue-router';
 import { push } from 'notivue';
 import { Refresh, DownloadTwo, Code } from '@icon-park/vue-next';
 
-import { _getRatingRank, _scrapeRating } from '@/apis/rating';
+import { _getRatingRank, _scrapeRating } from '@/api/rating';
 import { RatingRankType } from '@/interfaces/rating';
 import { ratingRankOriginOptions } from '@/config';
 

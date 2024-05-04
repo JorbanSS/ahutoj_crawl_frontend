@@ -25,10 +25,10 @@ const routes = [
     meta: { title: BaseTitle + "用户管理" },
   },
   {
-    name: "About",
-    path: "/about",
-    component: () => import("@/views/About.vue"),
-    meta: { title: BaseTitle + "关于" },
+    name: "CodeforcesStatistics",
+    path: '/codeforces/:CFID',
+    component: () => import("@/views/CodeforcesStatistics.vue"),
+    meta: { title: BaseTitle + "Codeforces 统计数据" },
   },
   {
     name: "Error404",
