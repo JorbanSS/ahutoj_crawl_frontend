@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup name="Main">
-import { reactive, watch } from 'vue';
+import { onMounted, reactive, watch } from 'vue';
 
 import ApexCharts from 'apexcharts';
 
@@ -39,13 +39,13 @@ interface VerdictDistributionType {
   colors: string[];
 }
 
-watch(() => props.verdict, (newVal) => {
+function renderChart() {
   let verdictDistribution: VerdictDistributionType = {
     series: [],
     labels: [],
     colors: [],
   }
-  Object.entries(newVal).forEach((item) => {
+  Object.entries(props.verdict).forEach((item) => {
     verdictDistribution.series.push(Number(item[1]))
     verdictDistribution.labels.push(item[0].toString());
   });
@@ -53,6 +53,14 @@ watch(() => props.verdict, (newVal) => {
   chartOptions.labels = verdictDistribution.labels;
   let chart = new ApexCharts(document.querySelector("#chart_verdict"), chartOptions);
   chart.render();
+}
+
+watch(() => props.verdict, () => {
+  renderChart();
+})
+
+onMounted(() => {
+  renderChart();
 })
 
 </script>

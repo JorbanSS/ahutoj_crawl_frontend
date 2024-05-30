@@ -52,7 +52,7 @@
       </div>
     </div>
   </div>
-  <div class="grid grid-cols-2 gap-6 mb-6">
+  <div class="grid grid-cols-2 gap-6 mb-6" v-if="status">
     <div class="card Border bg-white shadow-lg h-fit">
       <div class="overflow-x-auto rounded-2xl">
         <table class="table text-center">
@@ -104,10 +104,10 @@
       </div>
     </div>
   </div>
-  <div class="card Border bg-white shadow-lg py-3 pt-4 h-fit mb-6">
+  <div class="card Border bg-white shadow-lg py-3 pt-4 h-fit mb-6" v-if="status">
     <component :is="rating" :rating="codeforcesUser.rating" />
   </div>
-  <div class="grid grid-cols-2 gap-6 mb-6">
+  <div class="grid grid-cols-2 gap-6 mb-6" v-if="status">
     <div class="card Border bg-white shadow-lg pr-2 pt-4 h-fit">
       <component :is="problemRating" :problemRating="codeforcesUser.problemRating" />
     </div>
@@ -115,10 +115,10 @@
       <component :is="problemIndex" :problemIndex="codeforcesUser.problemIndex" />
     </div>
   </div>
-  <div class="card Border bg-white shadow-lg py-3 pt-4 h-fit mb-6">
+  <div class="card Border bg-white shadow-lg py-3 pt-4 h-fit mb-6" v-if="status">
     <component :is="tags" :tags="codeforcesUser.tags" />
   </div>
-  <div class="grid grid-cols-2 gap-6 mb-6">
+  <div class="grid grid-cols-2 gap-6 mb-6" v-if="status">
     <div class="card Border bg-white shadow-lg py-3 pt-4 h-fit">
       <component :is="verdict" :verdict="codeforcesUser.verdict" />
     </div>
@@ -126,10 +126,14 @@
       <component :is="language" :language="codeforcesUser.language" />
     </div>
   </div>
+  <div class="card Border bg-white shadow-lg mb-6 p-6 h-48 items-center justify-center space-y-4" v-if="!status">
+    <span class="text-lg font-bold">数据获取中</span>
+    <span class="loading loading-spinner loading-lg"></span>
+  </div>
 </template>
 
 <script lang="ts" setup name="Main">
-import { onMounted, reactive } from 'vue';
+import { onMounted, onUnmounted, reactive, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { push } from 'notivue';
@@ -147,6 +151,9 @@ import { ConvertTools } from '@/utils/globalFunctions';
 
 const route = useRoute();
 const router = useRouter();
+
+let status = ref(false);
+let returnStatus = ref(false);
 
 let codeforcesUser = reactive<CodeforcesStatisticsType>({
   CodeforcesID: '',
@@ -179,40 +186,66 @@ let codeforcesUser = reactive<CodeforcesStatisticsType>({
   get() {
     _getCodeforcesStatistics({}, this.CodeforcesID)
       .then((data: any) => {
-        this.problemRating = data.problemRating;
-        this.language = data.language;
-        this.tags = data.tags;
-        this.verdict = data.verdict;
-        this.problemIndex = data.problemIndex;
-        this.teamMates = data.teamMates;
-        this.rating = data.rating;
-        this.submission = {
-          submissionCount: data.submissionCount,
-          tried: data.tried,
-          solved: data.solved,
-          unsolved: data.unsolved,
-          averageAttempts: data.averageAttempts,
-          firstAttemptPassedCount: data.firstAttemptPassedCount,
+        if (data.Msg == 'OK') {
+          this.problemRating = data.problemRating;
+          this.language = data.language;
+          this.tags = data.tags;
+          this.verdict = data.verdict;
+          this.problemIndex = data.problemIndex;
+          this.teamMates = data.teamMates;
+          this.rating = data.rating;
+          this.submission = {
+            submissionCount: data.submissionCount,
+            tried: data.tried,
+            solved: data.solved,
+            unsolved: data.unsolved,
+            averageAttempts: data.averageAttempts,
+            firstAttemptPassedCount: data.firstAttemptPassedCount,
+          }
+          this.contest = {
+            maxUp: data.maxUp,
+            maxDown: data.maxDown,
+            bestRank: data.bestRank,
+            worstRank: data.worstRank,
+            contestCount: data.contestCount,
+            virtualParticipationCount: data.virtualParticipationCount,
+          }
+          Object.entries(this.rating).forEach((item) => {
+            this.nowRating = item[1].rating;
+            this.maxRating = Math.max(this.maxRating, this.nowRating);
+          });
+          returnStatus.value = true;
         }
-        this.contest = {
-          maxUp: data.maxUp,
-          maxDown: data.maxDown,
-          bestRank: data.bestRank,
-          worstRank: data.worstRank,
-          contestCount: data.contestCount,
-          virtualParticipationCount: data.virtualParticipationCount,
+      })
+      .then(() => {
+        if (returnStatus.value == true) {
+          status.value = true;
         }
-        Object.entries(this.rating).forEach((item) => {
-          this.nowRating = item[1].rating;
-          this.maxRating = Math.max(this.maxRating, this.nowRating);
-        });
       })
   },
 });
 
+let pollInterval: any;
+
+const startPolling = () => {
+  pollInterval = setInterval(() => {
+    codeforcesUser.get();
+  }, 1200);
+};
+
 onMounted(() => {
   codeforcesUser.CodeforcesID = route.params.CFID as string;
-  codeforcesUser.get();
+  startPolling();
+});
+
+onUnmounted(() => {
+  clearInterval(pollInterval);
+});
+
+watch(() => status.value, (newVal) => {
+  if (newVal == true) {
+    clearInterval(pollInterval);
+  }
 });
 
 </script>

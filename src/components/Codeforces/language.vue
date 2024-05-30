@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup name="Main">
-import { reactive, watch } from 'vue';
+import { onMounted, reactive, watch } from 'vue';
 
 import ApexCharts from 'apexcharts';
 
@@ -39,13 +39,13 @@ interface languageDistributionType {
   colors: string[];
 }
 
-watch(() => props.language, (newVal) => {
+function renderChart() {
   let languageDistribution: languageDistributionType = {
     series: [],
     labels: [],
     colors: [],
   }
-  Object.entries(newVal).forEach((item) => {
+  Object.entries(props.language).forEach((item) => {
     languageDistribution.series.push(Number(item[1]))
     languageDistribution.labels.push(item[0].toString());
   });
@@ -53,6 +53,14 @@ watch(() => props.language, (newVal) => {
   chartOptions.labels = languageDistribution.labels;
   let chart = new ApexCharts(document.querySelector("#chart_language"), chartOptions);
   chart.render();
+}
+
+watch(() => props.language, () => {
+  renderChart();
 })
+
+onMounted(() => {
+  renderChart();
+});
 
 </script>

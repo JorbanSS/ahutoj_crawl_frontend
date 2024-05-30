@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup name="Main">
-import { reactive, watch } from 'vue';
+import { onMounted, reactive, watch } from 'vue';
 
 import ApexCharts from 'apexcharts';
 
@@ -48,9 +48,9 @@ let chartOptions = reactive({
   ],
 });
 
-watch(() => props.tags, (newVal) => {
+function renderChart() {
   let problemTagsDistribution: any = []
-  Object.entries(newVal).forEach((item) => {
+  Object.entries(props.tags).forEach((item) => {
     problemTagsDistribution.push({
       x: item[0],
       y: Number(item[1]),
@@ -59,6 +59,15 @@ watch(() => props.tags, (newVal) => {
   chartOptions.series[0].data = problemTagsDistribution;
   let chart = new ApexCharts(document.querySelector("#chart_tags"), chartOptions);
   chart.render();
+
+}
+
+watch(() => props.tags, () => {
+  renderChart();
 })
+
+onMounted(() => {
+  renderChart();
+});
 
 </script>
